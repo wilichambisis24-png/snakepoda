@@ -1,75 +1,57 @@
-# React + TypeScript + Vite
+# SNAKE PODA — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Página web para ofrecer el servicio de poda en altura con un robot serpiente que trepa el tronco, se enrosca en las ramas y las poda por presión. Tiene control de acceso y dos secciones:
 
-Currently, two official plugins are available:
+1. **Funcionamiento:** demostración 3D del producto.
+2. **Reservas:** agenda de citas para los clientes.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+> El nombre del producto es provisional. Se cambia en un solo lugar: `src/config.ts`.
 
-## React Compiler
+## Cómo ejecutarlo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Abre http://localhost:5173
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Sin backend, la app funciona en **modo simulado**: guarda los datos en el navegador e incluye dos cuentas de prueba.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Rol | Correo | Contraseña |
+|---|---|---|
+| Cliente | cliente@demo.com | cliente123 |
+| Administrador | admin@snakepoda.com | admin123 |
+
+## Conectar con el backend
+
+1. Copia `.env.example` como `.env.local`.
+2. Escribe la URL del backend, por ejemplo `VITE_API_URL=http://localhost:3000`.
+3. Reinicia `npm run dev`.
+
+Lo que el frontend espera del backend (rutas, datos y errores) está en [docs/API.md](docs/API.md).
+
+## Tecnologías
+
+React, TypeScript y Vite · React Router (páginas) · Zustand (sesión) · Three.js, React Three Fiber y Rapier (simulación 3D).
+
+## Estructura
 
 ```
+src/
+├── api/          Llamadas al backend y modo simulado (api/simulado/)
+├── componentes/  Partes reutilizables: diseño de páginas, logo
+├── contenido/    Textos del producto
+├── paginas/      Una pantalla por archivo
+├── rutas/        Protección de páginas según la sesión y el rol
+├── store/        Estado global (sesión)
+└── config.ts     Nombre del producto y URL del backend
+```
+
+## Fases
+
+- [x] **Fase 1:** base de la app, login, registro, páginas protegidas y navegación.
+- [ ] **Fase 2:** sección Funcionamiento con la simulación 3D del robot.
+- [ ] **Fase 3:** sección Reservas: agendar, ver y cancelar citas.
+- [ ] **Fase 4:** panel del administrador para gestionar todas las reservas.
+- [ ] **Fase 5:** conexión con el backend real, ajustes finales y publicación.
