@@ -1,0 +1,128 @@
+para contexto del proyecto:
+hoya name los paso y sujerencia de errrasmientas para crear un proyecto de un equipo harware que sirva para podar plantas grandes , pero este proyecto solo ara la simulacion en 3d como una desmstracion  del producto.
+nombre esta pendiente
+
+Aquí tienes una ruta clara para tu proyecto: una simulación 3D que demuestre cómo funcionaría un equipo para podar plantas o árboles grandes, sin construir el hardware real.
+
+Pasos del proyecto
+1. Definir el concepto del equipo
+Elige qué tipo de máquina vas a mostrar, porque eso decide todo lo demás:
+
+Brazo robótico sobre pértiga telescópica, montado en vehículo o carrito
+Dron con sierra o cizalla
+Robot trepador que sube por el tronco
+Plataforma elevadora con cabezal de corte automático
+Anota los requisitos básicos: altura máxima de poda, grosor de rama que corta, tipo de herramienta (sierra circular, cizalla o cadena) y sensores (cámara, LiDAR).
+
+2. Bocetos y diseño conceptual
+Haz dibujos rápidos a mano o en tableta para fijar forma, tamaño y piezas principales: base, brazo, cabezal de corte y sensores.
+
+3. Modelado 3D mecánico (CAD)
+Modela cada pieza con medidas realistas y ensámblalas con sus articulaciones.
+
+4. Crear el entorno
+Modela los árboles, el terreno y el contexto, por ejemplo un parque, una huerta o una calle con cables eléctricos.
+
+5. Animación o simulación del funcionamiento
+Muestra la secuencia completa: la máquina llega, detecta la rama, posiciona el brazo, corta, la rama cae y la máquina retrocede.
+
+6. Render y presentación
+Produce un video demostrativo y, si quieres, una demo interactiva que se pueda girar y explorar.
+
+7. Material de presentación
+Prepara una ficha técnica, una explicación de cómo funcionaría y la propuesta de valor del producto.
+
+Herramientas sugeridas
+Etapa	Gratis	De pago / profesional
+Modelado CAD	FreeCAD, Onshape (plan gratuito)	Fusion 360 (gratis para estudiantes), SolidWorks
+Árboles y entorno	Blender (con el complemento Sapling Tree Gen)	SpeedTree
+Animación y render	Blender	KeyShot, Unreal Engine
+Simulación robótica con física	Gazebo + ROS 2, Webots, CoppeliaSim	NVIDIA Isaac Sim (gratis, pero requiere una GPU potente)
+Demo interactiva	Unity, Unreal Engine, Three.js (para la web)	—
+Edición del video final	DaVinci Resolve	Premiere Pro
+Combinación recomendada para empezar
+Si buscas lo más práctico y gratuito:
+Fusion 360 u Onshape para diseñar el equipo → Blender para los árboles, la animación y el render → DaVinci Resolve para el video final.
+
+Si quieres que la demostración sea más técnica, con física real del brazo y detección de ramas, añade Webots o Gazebo. Así mostrarías un robot que realmente “decide” dónde cortar.
+
+¿Qué tipo de equipo tienes en mente (brazo, dron, trepador)? Con eso te armo un plan más detallado e incluso te ayudo a pensar el nombre.
+
+sera una programacion quiero las erramientas para froend y backend java scrip
+
+Eligiendo bibliotecas de física y animación para la escena
+Perfecto, entonces será una aplicación web en JavaScript que muestra la simulación 3D del equipo de poda en el navegador. Esta es la pila que te recomiendo:
+
+Frontend (la simulación 3D)
+Necesidad	Herramienta
+Motor 3D	Three.js (o Babylon.js como alternativa más “todo incluido”)
+Framework de interfaz	React + React Three Fiber (Three.js dentro de React)
+Utilidades 3D	@react-three/drei (cámaras, controles, carga de modelos, sombras)
+Física (ramas que caen, colisiones)	Rapier con @react-three/rapier (o cannon-es)
+Animaciones del brazo o cabezal	GSAP o las animaciones exportadas desde Blender
+Panel de controles (altura, ángulo, velocidad)	Leva o lil-gui
+Estado de la app	Zustand
+Empaquetador	Vite
+Lenguaje	JavaScript o TypeScript (recomendado)
+Modelos 3D: diséñalos en Blender (o Fusion 360, pasándolos luego por Blender) y expórtalos en formato glTF/GLB, que es el estándar para la web.
+
+Backend
+Necesidad	Herramienta
+Servidor	Node.js + Express (simple) o NestJS (más estructurado)
+Comunicación en tiempo real (controlar la simulación en vivo)	Socket.IO
+Base de datos (guardar configuraciones, escenarios y usuarios)	PostgreSQL + Prisma, o MongoDB + Mongoose
+Autenticación (si la necesitas)	JWT o Auth.js
+Herramientas de trabajo
+VS Code como editor
+Git + GitHub para el control de versiones
+pnpm o npm para los paquetes
+ESLint + Prettier para mantener el código ordenado
+Despliegue: Vercel o Netlify para el frontend, y Render o Railway para el backend
+Pasos de desarrollo
+Crear el proyecto con npm create vite@latest, eligiendo React y TypeScript.
+Montar una escena básica con React Three Fiber: suelo, luz, cámara y controles orbitales.
+Modelar el equipo y un árbol en Blender y exportarlos en GLB.
+Cargar los modelos y animar las articulaciones del brazo.
+Añadir física con Rapier para que la rama cortada se separe y caiga.
+Crear un panel de control para mover el brazo, elegir la rama y activar el corte.
+Montar el backend en Node y Express para guardar escenarios y, si quieres, controlar la simulación por Socket.IO.
+Desplegar y preparar el modo “demo” automático para las presentaciones.
+Estructura sugerida
+proyecto-poda/
+├── frontend/   (Vite + React + Three.js)
+│   ├── public/models/   (archivos .glb)
+│   └── src/
+│       ├── components/   (Escena, Maquina, Arbol, Controles)
+│       └── store/        (Zustand)
+└── backend/    (Node + Express + Socket.IO)
+    └── src/
+        ├── routes/
+        └── models/
+Si quieres, puedo crearte ahora la base del proyecto con una escena 3D funcionando: un árbol simple, un brazo que se mueve y una rama que cae al cortarla.
+
+Weighing ESLint against Oxlint for a linter choice.
+Weighing ESLint against Oxlint for a linter choice.
+Elige ESLint: es el más usado, tiene más documentación y tutoriales, y sus reglas para React (por ejemplo, para los hooks) te ayudarán a detectar errores. Oxlint es más rápido, pero en un proyecto de este tamaño no notarás la diferencia.
+
+Si después te pregunta algo más (por ejemplo, si quieres instalar y arrancar el proyecto ahora), responde sí. Luego ejecuta:
+
+bash
+cd SNAKE_PODA
+npm install
+npm install three @react-three/fiber @react-three/drei @react-three/rapier leva zustand
+npm install -D @types/three
+npm run dev
+Abre la dirección que aparece (normalmente http://localhost:5173) y deberías ver la página de inicio de Vite con React.
+
+Un detalle: el nombre del paquete quedó como snake-eyes, distinto al del proyecto. No pasa nada, pero si quieres que coincidan, puedes cambiarlo después en el archivo package.json, en el campo "name".
+
+Cuando lo tengas corriendo, avísame y te paso el código de la primera escena 3D: suelo, árbol, brazo de poda y controles.
+
+Guía de Práctica Grupal UT5 y UT6.pdf
+pdf
+
+Actividades_Marketing_Serpiente.pdf
+pdf
+
+Lee este PDF, y en base a ello, genera un Word con los campos vacios llenos de (como el del arbol de problemas y objetivos segun al pdf de actividades). el word que sea editables para futiras modificaciones
+Hazlo en base a un proyecto que consiste en una maquina/robot con forma de serpiente que "trepa" o se arrastra por el tronco de los arboles llegando a las ramas, enredandose en ellas y podandolas con presion. Con el objetivo de solucionar un problema de resolver  los accidentes que se genera en la podad de arboles con bastante altura, o con ramas dificiles de cortar para una presentacion de la planta mas estetica.
