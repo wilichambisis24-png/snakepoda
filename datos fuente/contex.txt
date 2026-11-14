@@ -126,3 +126,8 @@ pdf
 
 Lee este PDF, y en base a ello, genera un Word con los campos vacios llenos de (como el del arbol de problemas y objetivos segun al pdf de actividades). el word que sea editables para futiras modificaciones
 Hazlo en base a un proyecto que consiste en una maquina/robot con forma de serpiente que "trepa" o se arrastra por el tronco de los arboles llegando a las ramas, enredandose en ellas y podandolas con presion. Con el objetivo de solucionar un problema de resolver  los accidentes que se genera en la podad de arboles con bastante altura, o con ramas dificiles de cortar para una presentacion de la planta mas estetica.
+
+
+ara 
+contrato:
+https://github.com/wilichambisis24-png/snakepoda/blob/main/docs/API.md
