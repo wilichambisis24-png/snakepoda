@@ -24,3 +24,21 @@ export const ETIQUETA_ESTADO: Record<EstadoReserva, string> = {
 export function sePuedeCancelar(estado: EstadoReserva): boolean {
   return estado === 'pendiente' || estado === 'confirmada'
 }
+
+/** Estados que el administrador asigna con PATCH /api/reservas/:id/estado (cancelar tiene su propia ruta). */
+export type EstadoAdministrable = 'confirmada' | 'completada'
+
+/** El administrador confirma las reservas pendientes. */
+export function sePuedeConfirmar({ estado }: { estado: EstadoReserva }): boolean {
+  return estado === 'pendiente'
+}
+
+/** Una reserva confirmada se completa desde el día de la visita (no antes). */
+export function sePuedeCompletar({ estado, fecha }: { estado: EstadoReserva; fecha: string }, hoy: string): boolean {
+  return estado === 'confirmada' && fecha <= hoy
+}
+
+/** Próxima = sigue activa y su fecha es hoy o después. Lo demás va al historial. */
+export function esProxima({ estado, fecha }: { estado: EstadoReserva; fecha: string }, hoy: string): boolean {
+  return sePuedeCancelar(estado) && fecha >= hoy
+}

@@ -1,6 +1,12 @@
 import { desdeTextoISO, esDomingo, hoyISO, sumarDias } from '../../reservas/fechas'
-import { DIAS_ANTICIPACION_MAX, LIMITES, sePuedeCancelar } from '../../reservas/reglas'
-import { ApiError, type DatosReserva, type Disponibilidad, type Reserva } from '../tipos'
+import {
+  DIAS_ANTICIPACION_MAX,
+  LIMITES,
+  sePuedeCancelar,
+  sePuedeCompletar,
+  sePuedeConfirmar,
+} from '../../reservas/reglas'
+import { ApiError, type DatosReserva, type Disponibilidad, type EstadoReserva, type Reserva } from '../tipos'
 import { esperar, generarId, guardar, leer } from './almacen'
 import { usuarioDeToken } from './authSimulado'
 
@@ -167,10 +173,42 @@ export async function cancelar(token: string | null, id: string): Promise<Reserv
   }
   if (!sePuedeCancelar(reserva.estado)) throw new ApiError(409, 'Esta reserva ya no se puede cancelar.')
 
-  const cancelada: Reserva = { ...reserva, estado: 'cancelada' }
+  return reemplazar(lista, { ...reserva, estado: 'cancelada' })
+}
+
+/** Solo el administrador: pendiente → confirmada y confirmada → completada. */
+export async function cambiarEstado(token: string | null, id: string, estado: EstadoReserva): Promise<Reserva> {
+  await esperar()
+  const usuario = usuarioDeToken(token)
+  if (usuario.rol !== 'admin') {
+    throw new ApiError(403, 'Solo el administrador puede cambiar el estado de una reserva.')
+  }
+  if (estado !== 'confirmada' && estado !== 'completada') {
+    throw new ApiError(400, 'El estado debe ser "confirmada" o "completada".')
+  }
+
+  const lista = reservas()
+  const reserva = lista.find((r) => r.id === id)
+  if (!reserva) throw new ApiError(404, 'La reserva no existe.')
+
+  if (estado === 'confirmada' && !sePuedeConfirmar(reserva)) {
+    throw new ApiError(409, 'Solo se pueden confirmar las reservas pendientes.')
+  }
+  if (estado === 'completada' && !sePuedeCompletar(reserva, hoyISO())) {
+    throw new ApiError(
+      409,
+      reserva.estado === 'confirmada'
+        ? 'La visita todavía no llegó: se puede completar desde el día de la cita.'
+        : 'Solo se pueden completar las reservas confirmadas.',
+    )
+  }
+  return reemplazar(lista, { ...reserva, estado })
+}
+
+function reemplazar(lista: Reserva[], cambiada: Reserva): Reserva {
   guardar(
     CLAVE_RESERVAS,
-    lista.map((r) => (r.id === id ? cancelada : r)),
+    lista.map((r) => (r.id === cambiada.id ? cambiada : r)),
   )
-  return cancelada
+  return cambiada
 }

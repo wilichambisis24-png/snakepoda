@@ -2,6 +2,7 @@ import { MODO_SIMULADO } from '../config'
 import { useAuthStore } from '../store/authStore'
 import { peticion } from './http'
 import * as simulado from './simulado/reservasSimulado'
+import type { EstadoAdministrable } from '../reservas/reglas'
 import { ApiError, type DatosReserva, type Disponibilidad, type Reserva } from './tipos'
 
 // Punto único de acceso a las reservas. Las pantallas no saben si responde
@@ -38,5 +39,14 @@ export const reservasApi = {
   cancelar(id: string): Promise<Reserva> {
     if (MODO_SIMULADO) return conSesionSimulada((token) => simulado.cancelar(token, id))
     return peticion<Reserva>(`/api/reservas/${encodeURIComponent(id)}/cancelar`, { metodo: 'PATCH' })
+  },
+
+  /** Solo el administrador: confirmar una reserva pendiente o completar una confirmada. */
+  cambiarEstado(id: string, estado: EstadoAdministrable): Promise<Reserva> {
+    if (MODO_SIMULADO) return conSesionSimulada((token) => simulado.cambiarEstado(token, id, estado))
+    return peticion<Reserva>(`/api/reservas/${encodeURIComponent(id)}/estado`, {
+      metodo: 'PATCH',
+      cuerpo: { estado },
+    })
   },
 }

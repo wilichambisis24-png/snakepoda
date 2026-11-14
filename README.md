@@ -55,5 +55,5 @@ src/
 - [x] **Fase 1:** base de la app, login, registro, páginas protegidas y navegación.
 - [x] **Fase 2:** sección Funcionamiento con la simulación 3D del robot.
 - [x] **Fase 3:** sección Reservas: agendar, ver y cancelar citas.
-- [ ] **Fase 4:** panel del administrador para gestionar todas las reservas.
+- [x] **Fase 4:** panel del administrador para gestionar todas las reservas.
 - [ ] **Fase 5:** conexión con el backend real, ajustes finales y publicación.

@@ -21,7 +21,7 @@ Repositorio: https://github.com/wilichambisis24-png/snakepoda
 | 1 | Base de la app, inicio de sesión, registro, páginas protegidas y menú | Terminada |
 | 2 | Sección Funcionamiento: simulación 3D del robot | Terminada |
 | 3 | Sección Reservas: agendar, ver y cancelar citas. Página de inicio con la presentación del grupo | Terminada |
-| 4 | Panel del administrador: confirmar reservas y marcarlas como completadas | Pendiente |
+| 4 | Panel del administrador: resumen, búsqueda, confirmar, completar y cancelar reservas | Terminada |
 | 5 | Conexión con el backend real y publicación en Cloudflare Pages | Pendiente |
 
 ## 3. Cómo ejecutarlo
@@ -108,7 +108,16 @@ Si el navegador no puede mostrar gráficos 3D, la página muestra un aviso en lu
 - Puede **cancelar** una reserva próxima. Antes, la página pide confirmar.
 - Si otra persona toma el mismo horario un momento antes, aparece un aviso y se vuelven a cargar los horarios libres.
 
-**El administrador** ve las reservas de **todos** los clientes, con el nombre de cada uno, en dos columnas: Próximas e Historial. Puede cancelarlas, pero no crear reservas. Confirmarlas y marcarlas como completadas llega en la fase 4.
+**El administrador** ve un panel para gestionar las reservas de **todos** los clientes. No puede crear reservas.
+
+- **Resumen:** 5 tarjetas con el total y la cantidad por estado (Por confirmar, Confirmadas, Completadas y Canceladas). Al tocar una tarjeta se muestran solo esas reservas.
+- **Avisos:** cuántas visitas confirmadas hay hoy y cuántas reservas tienen la fecha pasada y siguen sin cerrar (pendientes o confirmadas).
+- **Buscador:** por nombre del cliente o dirección. No importan las tildes ni las mayúsculas.
+- **Dos columnas:** Próximas e Historial. Cada reserva muestra el nombre del cliente y sus botones:
+  - **Confirmar**, si está pendiente.
+  - **Marcar completada**, si está confirmada y la visita es hoy o ya pasó.
+  - **Cancelar reserva**, si está pendiente o confirmada. Antes, la página pide confirmar.
+- Las reservas con fecha pasada que siguen pendientes o confirmadas muestran un aviso para cerrarlas.
 
 ## 5. Roles y permisos
 
@@ -118,7 +127,7 @@ Si el navegador no puede mostrar gráficos 3D, la página muestra un aviso en lu
 | Crear una reserva | Sí | No |
 | Ver reservas | Solo las suyas | Todas |
 | Cancelar una reserva pendiente o confirmada | Solo las suyas | Todas |
-| Confirmar o completar una reserva | No | Sí (fase 4) |
+| Confirmar o completar una reserva | No | Sí |
 
 ## 6. Reglas de la agenda
 
@@ -131,7 +140,11 @@ Si el navegador no puede mostrar gráficos 3D, la página muestra un aviso en lu
   - Se pueden pedir de 1 a 50 árboles.
   - La altura va de 2 a 40 m.
   - Las notas tienen como máximo 500 caracteres.
-- Estados de una reserva: **pendiente** (recién creada), **confirmada**, **completada** y **cancelada**. Solo se pueden cancelar las pendientes y las confirmadas.
+- Estados de una reserva y quién los cambia:
+  - **pendiente**: recién creada por el cliente.
+  - **confirmada**: el administrador confirma una pendiente.
+  - **completada**: el administrador completa una confirmada, desde el día de la visita.
+  - **cancelada**: el cliente (solo las suyas) o el administrador cancelan una pendiente o confirmada.
 
 Estas reglas están en `src/reservas/reglas.ts` y en el modo simulado. El backend debe aplicar las mismas.
 
@@ -160,7 +173,7 @@ Rutas que usa el frontend. El detalle de cada una está en [`docs/API.md`](../do
 | GET | `/api/reservas` | Lista de reservas |
 | POST | `/api/reservas` | Crear una reserva |
 | PATCH | `/api/reservas/:id/cancelar` | Cancelar una reserva |
-| PATCH | `/api/reservas/:id/estado` | Cambiar el estado (fase 4) |
+| PATCH | `/api/reservas/:id/estado` | Confirmar o completar (solo administrador) |
 
 ## 8. Tecnologías
 
@@ -210,10 +223,14 @@ El nombre del producto se cambia en un solo lugar: `src/config.ts`.
   - Datos inválidos y horario tomado dos veces.
   - Permisos de cliente y administrador.
   - Cancelar dos veces.
+- Panel del administrador: 12 pruebas automáticas de los cambios de estado, todas correctas:
+  - Confirmar y completar, incluidas reservas con fecha pasada.
+  - No se puede completar una pendiente ni una visita futura, ni confirmar dos veces.
+  - Un cliente no puede cambiar estados.
+- Revisión visual del panel en computadora y en celular.
 - Revisión visual de Inicio (computadora y celular) y de las reservas del administrador.
 
 ## 11. Pendientes
 
 - Escribir los nombres de los integrantes en `src/contenido/equipo.ts`.
-- Fase 4: panel del administrador para confirmar reservas y marcarlas como completadas.
 - Fase 5: conectar con el backend real, que debe aplicar las reglas de la sección 6, y publicar en Cloudflare Pages con el dominio snakepoda.com.

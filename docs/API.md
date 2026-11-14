@@ -86,9 +86,7 @@ Devuelve el `Usuario` dueño del token. El frontend lo llama al abrir la app par
 
 Respuesta **200**: un objeto `Usuario`. Error: **401**.
 
-## Fase 3 — Reservas (confirmado, el frontend ya lo usa)
-
-Solo `PATCH /api/reservas/:id/estado` queda como borrador: el frontend lo usará en la Fase 4 (panel del administrador).
+## Fases 3 y 4 — Reservas (confirmado, el frontend ya lo usa)
 
 ```ts
 type EstadoReserva = 'pendiente' | 'confirmada' | 'completada' | 'cancelada'
@@ -114,7 +112,7 @@ interface Reserva {
 | `GET /api/reservas` 🔒 | cliente, admin | El cliente ve solo las suyas; el admin ve todas |
 | `POST /api/reservas` 🔒 | cliente | Crea una reserva en estado `pendiente` |
 | `PATCH /api/reservas/:id/cancelar` 🔒 | dueño, admin | Pasa la reserva a `cancelada` |
-| `PATCH /api/reservas/:id/estado` 🔒 | admin | *Borrador, Fase 4.* Cuerpo `{ "estado": "confirmada" }`; cambia el estado |
+| `PATCH /api/reservas/:id/estado` 🔒 | admin | Confirma una reserva pendiente o completa una confirmada |
 
 🔒 = requiere `Authorization: Bearer <token>`.
 
@@ -180,3 +178,29 @@ Errores:
 | 403 | Un cliente intenta cancelar la reserva de otra persona |
 | 404 | La reserva no existe |
 | 409 | La reserva ya está `completada` o `cancelada` |
+
+### `PATCH /api/reservas/:id/estado` 🔒 (solo admin)
+
+Petición:
+
+```json
+{ "estado": "confirmada" }
+```
+
+Cambios permitidos (cancelar se hace con la ruta `/cancelar`):
+
+| De | A | Condición |
+|---|---|---|
+| `pendiente` | `confirmada` | Siempre |
+| `confirmada` | `completada` | Desde el día de la visita: la `fecha` de la reserva es hoy o anterior |
+
+Respuesta **200**: la `Reserva` actualizada.
+
+Errores:
+
+| Código | Cuándo |
+|---|---|
+| 400 | `estado` no es `"confirmada"` ni `"completada"` |
+| 403 | Quien lo pide no es administrador |
+| 404 | La reserva no existe |
+| 409 | El cambio no está permitido (por ejemplo, completar una pendiente o una visita futura, o confirmar dos veces) |
