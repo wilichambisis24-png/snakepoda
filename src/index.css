@@ -209,11 +209,6 @@ a {
   color: var(--tierra);
 }
 
-.insignia-fase {
-  background: var(--aviso-fondo);
-  color: var(--aviso-texto);
-}
-
 /* ===== Tarjetas ===== */
 .tarjeta {
   background: var(--superficie);
@@ -437,14 +432,6 @@ a {
   }
 }
 
-.aviso-simulado {
-  background: var(--aviso-fondo);
-  color: var(--aviso-texto);
-  font-size: 0.85rem;
-  text-align: center;
-  padding: 0.4rem var(--margen-lateral);
-}
-
 .contenido {
   flex: 1;
   width: 100%;
@@ -514,39 +501,20 @@ a {
   color: var(--texto-suave);
 }
 
-.portada-acciones {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.secciones-principales {
+/* Portada con la presentación del grupo */
+.portada-grupo {
   display: grid;
-  gap: 1.25rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: minmax(0, 1fr) minmax(200px, 300px);
+  align-items: center;
+  gap: 2rem;
 }
 
-.tarjeta-seccion {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  color: inherit;
-  text-decoration: none;
-  transition:
-    border-color 0.15s,
-    transform 0.15s;
+.portada-grupo h1 {
+  max-width: none;
 }
 
-.tarjeta-seccion:hover {
-  border-color: var(--verde-500);
-  transform: translateY(-2px);
-}
-
-.tarjeta-seccion p {
-  color: var(--texto-suave);
-}
-
-.tarjeta-seccion-etiqueta {
+.portada-antetitulo {
+  margin: 0 0 0.35rem;
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -554,10 +522,281 @@ a {
   color: var(--tierra);
 }
 
-.tarjeta-seccion-ir {
-  margin-top: auto;
+.portada-ilustracion {
+  width: 100%;
+  height: auto;
+}
+
+.ficha-grupo {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+
+.ficha-grupo li {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radio-chico);
+  background: rgb(255 255 255 / 70%);
+  border: 1px solid var(--borde);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--verde-900);
+}
+
+.ficha-grupo span {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--texto-suave);
+}
+
+/* Tarjetas del equipo */
+.equipo {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.integrante {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem 1.1rem 1.25rem;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+
+.integrante h3 {
+  font-size: 1.05rem;
+  margin: 0.9rem 0 0.15rem;
+}
+
+.integrante-pendiente {
+  color: var(--texto-suave);
+  font-style: italic;
+}
+
+.integrante-rol {
+  margin: 0 0 0.85rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--verde-600);
+}
+
+.integrante-avatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.integrante-icono {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--superficie);
+  color: var(--verde-700);
+  border: 2px solid var(--borde);
+}
+
+.avatar-lider {
+  background: linear-gradient(135deg, var(--verde-600), var(--verde-900));
+}
+
+.avatar-servidor {
+  background: linear-gradient(135deg, #3d6f9e, var(--info));
+}
+
+.avatar-pantalla {
+  background: linear-gradient(135deg, var(--verde-500), var(--verde-700));
+}
+
+.avatar-pruebas {
+  background: linear-gradient(135deg, var(--tierra-claro), var(--tierra));
+}
+
+.avatar-red {
+  background: linear-gradient(135deg, #5b8f8a, #2f5f5a);
+}
+
+.integrante-tareas {
+  list-style: none;
+  margin: auto 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.integrante-tareas li {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--verde-50);
+  border: 1px solid var(--verde-100);
+  font-size: 0.75rem;
+  color: var(--texto-suave);
+}
+
+/* El proyecto en tres ideas */
+.ideas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+
+.idea {
+  padding: 1.35rem;
+  border-radius: var(--radio);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+}
+
+.idea h3 {
+  font-size: 1.05rem;
+  margin-top: 0.85rem;
+}
+
+.idea p {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+}
+
+.idea-icono {
+  display: inline-grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+}
+
+.idea-1 {
+  background: var(--peligro-fondo);
+  color: var(--peligro);
+}
+
+.idea-2 {
+  background: var(--verde-100);
+  color: var(--verde-700);
+}
+
+.idea-3 {
+  background: var(--info-fondo);
+  color: var(--info);
+}
+
+/* Diagrama de la arquitectura de red: nodos unidos por flechas */
+.topologia {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2.25rem;
+}
+
+.nodo {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.3rem;
+  padding: 1.1rem;
+  border-radius: var(--radio);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-top: 4px solid var(--verde-500);
+}
+
+.nodo:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  top: 50%;
+  right: -1.75rem;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--verde-500);
+}
+
+.nodo-capa {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--texto-suave);
+}
+
+.nodo-nombre {
+  font-size: 1.1rem;
+  color: var(--verde-900);
+}
+
+.nodo-detalle {
+  font-size: 0.88rem;
+  color: var(--texto-suave);
+}
+
+.nodo-dato {
+  justify-self: start;
+  margin-top: 0.35rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  background: var(--verde-50);
+  color: var(--verde-700);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 860px) {
+  .portada-grupo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .portada-ilustracion {
+    order: -1;
+    max-width: 180px;
+    justify-self: center;
+  }
+
+  .topologia {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+  }
+
+  .nodo:not(:last-child)::after {
+    content: '↓';
+    top: auto;
+    right: auto;
+    bottom: -1.85rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 .pasos {
@@ -596,33 +835,6 @@ a {
   background: var(--verde-700);
   color: #fff;
   font-weight: 700;
-}
-
-.beneficios {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-
-.beneficio p {
-  margin: 0;
-  color: var(--texto-suave);
-}
-
-.proximamente {
-  border-style: dashed;
-  box-shadow: none;
-}
-
-.proximamente p {
-  margin: 0.75rem 0 0.25rem;
-  font-weight: 600;
-}
-
-.proximamente ul {
-  margin: 0;
-  padding-left: 1.25rem;
-  color: var(--texto-suave);
 }
 
 .no-encontrada {
@@ -901,5 +1113,263 @@ a {
 
   .demo-visor {
     height: clamp(320px, 58vh, 520px);
+  }
+}
+
+/* ===== Reservas ===== */
+.reservas {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  align-items: start;
+}
+
+.reservas-admin {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Vista del administrador: próximas e historial lado a lado. */
+.lista-columnas {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+
+.titulo-tarjeta {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.alerta-exito {
+  background: var(--verde-100);
+  color: var(--verde-800);
+}
+
+.alerta .btn {
+  margin-top: 0.25rem;
+}
+
+.campo-ayuda {
+  margin: 0;
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+}
+
+.texto-peligro {
+  color: var(--peligro);
+}
+
+.campo textarea {
+  resize: vertical;
+  min-height: 4.5rem;
+}
+
+/* Grupo de opciones (fieldset) con el mismo aspecto que un campo normal. */
+.campo-grupo {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.campo-grupo legend {
+  padding: 0;
+  margin-bottom: 0.35rem;
+}
+
+.horarios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.horario {
+  position: relative;
+}
+
+/* El botón de opción real queda oculto pero sigue funcionando con teclado y lectores de pantalla. */
+.horario input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.horario span {
+  display: inline-block;
+  padding: 0.45rem 0.95rem;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: var(--superficie);
+  color: var(--verde-700);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+}
+
+.horario span:hover {
+  border-color: var(--verde-500);
+  background: var(--verde-50);
+}
+
+.horario input:checked + span {
+  background: var(--verde-700);
+  border-color: var(--verde-700);
+  color: #fff;
+}
+
+.horario input:focus-visible + span {
+  outline: 3px solid var(--verde-500);
+  outline-offset: 2px;
+}
+
+.btn-peligro {
+  background: var(--peligro);
+  color: #fff;
+}
+
+.btn-peligro:hover:not(:disabled) {
+  background: #8f1e18;
+}
+
+.subtitulo-lista {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--texto-suave);
+  margin: 0 0 0.6rem;
+}
+
+.lista-apilada {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.lista-vacia {
+  margin: 0;
+  color: var(--texto-suave);
+}
+
+.lista-reservas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.reserva {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-left: 4px solid var(--borde);
+  border-radius: var(--radio-chico);
+  padding: 1rem 1.15rem;
+}
+
+.reserva-pendiente {
+  border-left-color: #d9a400;
+}
+
+.reserva-confirmada {
+  border-left-color: var(--info);
+}
+
+.reserva-completada {
+  border-left-color: var(--verde-500);
+}
+
+.reserva-cancelada {
+  background: var(--fondo);
+}
+
+.reserva-cancelada .reserva-fecha {
+  color: var(--texto-suave);
+}
+
+.reserva-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.reserva-fecha {
+  margin: 0;
+  font-weight: 700;
+  color: var(--verde-900);
+}
+
+.reserva-hora {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+}
+
+.estado-pendiente {
+  background: var(--aviso-fondo);
+  color: var(--aviso-texto);
+}
+
+.estado-confirmada {
+  background: var(--info-fondo);
+  color: var(--info);
+}
+
+.estado-completada {
+  background: var(--verde-100);
+  color: var(--verde-700);
+}
+
+.estado-cancelada {
+  background: #eceeec;
+  color: var(--texto-suave);
+}
+
+.reserva-datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem 1rem;
+  margin: 0.75rem 0 0;
+}
+
+.reserva-datos dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--texto-suave);
+}
+
+.reserva-datos dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.reserva-dato-ancho {
+  grid-column: 1 / -1;
+}
+
+.reserva-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+  font-size: 0.9rem;
+}
+
+.reserva-error {
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .reservas,
+  .lista-columnas {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

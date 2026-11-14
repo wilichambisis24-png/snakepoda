@@ -1,5 +1,4 @@
 import { NavLink, Outlet } from 'react-router'
-import { MODO_SIMULADO } from '../config'
 import { useAuthStore } from '../store/authStore'
 import { Logo } from './Logo'
 import { useVerificarSesion } from './useVerificarSesion'
@@ -50,12 +49,6 @@ export function DisenoApp() {
           </div>
         </div>
       </header>
-
-      {MODO_SIMULADO && (
-        <div className="aviso-simulado" role="status">
-          Modo simulado: los datos se guardan solo en este navegador hasta conectar el backend.
-        </div>
-      )}
 
       <main className="contenido">
         <Outlet />

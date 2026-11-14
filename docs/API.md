@@ -86,9 +86,9 @@ Devuelve el `Usuario` dueño del token. El frontend lo llama al abrir la app par
 
 Respuesta **200**: un objeto `Usuario`. Error: **401**.
 
-## Fase 3 — Reservas (borrador, puede cambiar)
+## Fase 3 — Reservas (confirmado, el frontend ya lo usa)
 
-Se adelanta para que el backend pueda ir preparándolo. Se confirma cuando el frontend llegue a la fase 3.
+Solo `PATCH /api/reservas/:id/estado` queda como borrador: el frontend lo usará en la Fase 4 (panel del administrador).
 
 ```ts
 type EstadoReserva = 'pendiente' | 'confirmada' | 'completada' | 'cancelada'
@@ -110,10 +110,73 @@ interface Reserva {
 
 | Método y ruta | Quién | Qué hace |
 |---|---|---|
-| `GET /api/disponibilidad?fecha=AAAA-MM-DD` | cliente, admin | Horarios libres de ese día: `{ "fecha": "...", "horarios": ["09:00", "11:00"] }` |
+| `GET /api/disponibilidad?fecha=AAAA-MM-DD` 🔒 | cliente, admin | Horarios libres de ese día |
 | `GET /api/reservas` 🔒 | cliente, admin | El cliente ve solo las suyas; el admin ve todas |
-| `POST /api/reservas` 🔒 | cliente | Crea una reserva en estado `pendiente`. **409** si el horario ya está ocupado |
+| `POST /api/reservas` 🔒 | cliente | Crea una reserva en estado `pendiente` |
 | `PATCH /api/reservas/:id/cancelar` 🔒 | dueño, admin | Pasa la reserva a `cancelada` |
-| `PATCH /api/reservas/:id/estado` 🔒 | admin | Cuerpo `{ "estado": "confirmada" }`; cambia el estado |
+| `PATCH /api/reservas/:id/estado` 🔒 | admin | *Borrador, Fase 4.* Cuerpo `{ "estado": "confirmada" }`; cambia el estado |
 
 🔒 = requiere `Authorization: Bearer <token>`.
+
+### Reglas de la agenda
+
+Así funciona el modo simulado del frontend (`src/api/simulado/reservasSimulado.ts`). Si el backend usa otros valores, avisar para ajustar el formulario.
+
+- Hay **un solo equipo de poda**: cada horario de cada día admite una sola reserva que no esté `cancelada`.
+- Horarios de inicio: `08:00`, `10:00`, `12:00`, `14:00` y `16:00`. Cada visita dura unas 2 horas.
+- Se atiende de **lunes a sábado**. El domingo no tiene horarios.
+- Se puede reservar desde hoy hasta **60 días** adelante. Los horarios de hoy que ya pasaron no se ofrecen.
+
+### `GET /api/disponibilidad?fecha=2026-11-20` 🔒
+
+Respuesta **200**:
+
+```json
+{ "fecha": "2026-11-20", "horarios": ["08:00", "12:00", "16:00"] }
+```
+
+Solo incluye los horarios libres. Un domingo, una fecha pasada o una fecha a más de 60 días devuelven `"horarios": []`.
+Error: **400** si la fecha no tiene el formato `AAAA-MM-DD`.
+
+### `GET /api/reservas` 🔒
+
+Respuesta **200**: un arreglo de `Reserva`. El orden no importa: el frontend las ordena.
+
+### `POST /api/reservas` 🔒
+
+Petición:
+
+```json
+{
+  "fecha": "2026-11-20",
+  "hora": "10:00",
+  "direccion": "Calle Los Pinos 245, Zona Sur",
+  "cantidadArboles": 2,
+  "alturaAproximada": 12.5,
+  "notas": "Hay cables de luz cerca de una rama."
+}
+```
+
+`notas` es opcional. El backend completa `id`, `clienteId` y `clienteNombre` (a partir del token), `estado: "pendiente"` y `creadaEn`.
+
+Respuesta **201**: la `Reserva` creada.
+
+Errores:
+
+| Código | Cuándo |
+|---|---|
+| 400 | Fecha pasada, a más de 60 días o domingo; hora fuera de los horarios de atención o que ya pasó; dirección de menos de 8 caracteres; `cantidadArboles` no entero o fuera de 1–50; `alturaAproximada` fuera de 2–40 m; `notas` de más de 500 caracteres |
+| 403 | Quien reserva es un administrador |
+| 409 | El horario ya está ocupado. El frontend vuelve a pedir la disponibilidad |
+
+### `PATCH /api/reservas/:id/cancelar` 🔒
+
+Sin cuerpo. Respuesta **200**: la `Reserva` actualizada, con `"estado": "cancelada"`.
+
+Errores:
+
+| Código | Cuándo |
+|---|---|
+| 403 | Un cliente intenta cancelar la reserva de otra persona |
+| 404 | La reserva no existe |
+| 409 | La reserva ya está `completada` o `cancelada` |

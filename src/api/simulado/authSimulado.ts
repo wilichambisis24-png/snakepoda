@@ -74,10 +74,15 @@ export async function registro(datos: DatosRegistro): Promise<Sesion> {
   return crearSesion(nuevo)
 }
 
-export async function perfil(token: string | null): Promise<Usuario> {
-  await esperar(200)
+/** Usuario dueño del token simulado. Lanza 401 si el token no es válido. */
+export function usuarioDeToken(token: string | null): Usuario {
   const id = token?.split('.')[1]
   const usuario = usuarios().find((u) => u.id === id)
   if (!usuario) throw new ApiError(401, 'Tu sesión expiró. Vuelve a iniciar sesión.')
   return sinPassword(usuario)
+}
+
+export async function perfil(token: string | null): Promise<Usuario> {
+  await esperar(200)
+  return usuarioDeToken(token)
 }

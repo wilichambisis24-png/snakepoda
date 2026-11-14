@@ -33,7 +33,7 @@ Lo que el frontend espera del backend (rutas, datos y errores) está en [docs/AP
 
 ## Tecnologías
 
-React, TypeScript y Vite · React Router (páginas) · Zustand (sesión) · Three.js, React Three Fiber y Rapier (simulación 3D).
+React, TypeScript y Vite · React Router (páginas) · Zustand (sesión y estado de la demo) · Three.js, React Three Fiber y Rapier (simulación 3D).
 
 ## Estructura
 
@@ -41,8 +41,10 @@ React, TypeScript y Vite · React Router (páginas) · Zustand (sesión) · Thre
 src/
 ├── api/          Llamadas al backend y modo simulado (api/simulado/)
 ├── componentes/  Partes reutilizables: diseño de páginas, logo
+├── demo/         Simulación 3D del robot (sección Funcionamiento)
 ├── contenido/    Textos del producto
 ├── paginas/      Una pantalla por archivo
+├── reservas/     Formulario, lista, fechas y reglas de las reservas
 ├── rutas/        Protección de páginas según la sesión y el rol
 ├── store/        Estado global (sesión)
 └── config.ts     Nombre del producto y URL del backend
@@ -51,7 +53,7 @@ src/
 ## Fases
 
 - [x] **Fase 1:** base de la app, login, registro, páginas protegidas y navegación.
-- [ ] **Fase 2:** sección Funcionamiento con la simulación 3D del robot.
-- [ ] **Fase 3:** sección Reservas: agendar, ver y cancelar citas.
+- [x] **Fase 2:** sección Funcionamiento con la simulación 3D del robot.
+- [x] **Fase 3:** sección Reservas: agendar, ver y cancelar citas.
 - [ ] **Fase 4:** panel del administrador para gestionar todas las reservas.
 - [ ] **Fase 5:** conexión con el backend real, ajustes finales y publicación.
